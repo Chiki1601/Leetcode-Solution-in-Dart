@@ -1,0 +1,18 @@
+class Solution {
+  String findDifferentBinaryString(List<String> nums) {
+      final n = nums.length;
+      final x = nums[0].length;
+      final s = nums.map((e) => int.parse(e, radix: 2)).toList();
+      var ans = '';
+      for (int i = 0; i <= n; i++) {
+          if (!s.contains(i)) {
+              ans = i.toRadixString(2);
+              break;
+          }
+      }
+      if (ans.length != x) {
+          ans = ans.padLeft(x, "0");
+      }
+      return ans;
+  }
+}
