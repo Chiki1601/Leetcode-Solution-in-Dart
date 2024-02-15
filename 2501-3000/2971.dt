@@ -1,0 +1,13 @@
+class Solution {
+  int largestPerimeter(List<int> nums) {
+    nums.sort();
+    int perimeter = nums.reduce((a, b) => a + b);
+    
+    while (nums.length >= 3 && perimeter - nums.last <= nums.last) {
+      perimeter -= nums.last;
+      nums.removeLast();
+    }
+    if (nums.length <= 2) perimeter = -1;
+    return perimeter;
+  }
+}
