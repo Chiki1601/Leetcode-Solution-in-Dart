@@ -1,0 +1,20 @@
+class Solution {
+  int findJudge(int n, List<List<int>> trust) {
+    final List<int> indegrees = List.filled(n + 1, 0);
+    final List<int> outdegrees = List.filled(n + 1, 0);
+    for (final t in trust) {
+        final truster = t.first;
+        final trustee = t.last;
+        outdegrees[truster] += 1;
+        indegrees[trustee] += 1;
+    }
+
+    for (int i = 1; i < n + 1; i++) {
+        if (indegrees[i] == n - 1 && outdegrees[i] == 0) {
+            return i;
+        }
+    }
+
+    return -1;
+  }
+}
