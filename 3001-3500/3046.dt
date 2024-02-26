@@ -1,0 +1,12 @@
+class Solution {
+  bool isPossibleToSplit(List<int> nums) {
+    Map<int, int> countMap = {}; 
+    for (int num in nums) {
+        countMap[num] = (countMap[num] ?? 0) + 1;
+        if ((countMap[num] ?? 0) > 2) {
+            return false;
+        }
+    }
+    return true;
+  }
+}
