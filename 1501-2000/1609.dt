@@ -1,0 +1,28 @@
+class Solution {
+  static const MAXINT = 1000001;
+  bool isEvenOddTree(TreeNode? root) {
+    if (root != null && root.val.isEven) return false;
+    int levelIndex = 0;
+    var currentLevel = <TreeNode?>[root];
+    while (currentLevel.isNotEmpty) {
+      var nextLevel = <TreeNode?>[];
+      levelIndex++;
+      int previous = levelIndex.isOdd ? MAXINT : 0;
+      for (var node in currentLevel) {
+     for (var leaf in [node!.left, node.right]) {
+          if (leaf == null) continue;
+          int value = leaf.val;
+          if (levelIndex.isOdd) {
+            if (value >= previous || value.isOdd) return false;
+          } else {
+            if (value <= previous || value.isEven) return false;
+          }
+          previous = value;
+          nextLevel.add(leaf);
+        }
+      }
+      currentLevel = nextLevel;
+    }
+    return true;
+  }
+}
