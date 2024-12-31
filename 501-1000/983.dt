@@ -1,0 +1,19 @@
+import 'dart:math';
+class Solution {
+  int mincostTickets(List<int> days, List<int> costs) {
+    final sett = days.toSet();
+    final end = days.last;
+    final dp = List.filled(end + 1, 0);
+    dp[days[0]] = costs[0];
+    for (int i = days.first; i < dp.length; i++){
+        if (sett.contains(i)){
+            dp[i] = dp[i - 1] + costs[0];
+            dp[i] = min(dp[i], dp[max(0, i - 7)] + costs[1]);
+            dp[i] = min(dp[i], dp[max(0, i - 30)] + costs[2]);
+        } else {
+            dp[i] = dp[i - 1];
+        }
+    }
+    return dp.last;
+  }
+}
