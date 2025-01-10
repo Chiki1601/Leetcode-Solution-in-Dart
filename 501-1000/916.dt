@@ -1,0 +1,44 @@
+class Solution {
+  List<String> wordSubsets(List<String> words1, List<String> words2) {
+    List<int> maxCharFreq = List.filled(26, 0);
+
+    // Step 1: Calculate the max character frequencies from words2
+    for (var word in words2) {
+      List<int> tempCharFreq = List.filled(26, 0);
+
+      for (var char in word.split('')) {
+        tempCharFreq[char.codeUnitAt(0) - 'a'.codeUnitAt(0)]++;
+      }
+
+      for (int i = 0; i < 26; i++) {
+        maxCharFreq[i] = max(maxCharFreq[i], tempCharFreq[i]);
+      }
+    }
+
+    List<String> result = [];
+
+    // Step 2: Check each word in words1 to see if it contains all the necessary characters
+    for (var word in words1) {
+      List<int> tempCharFreq = List.filled(26, 0);
+
+      for (var char in word.split('')) {
+        tempCharFreq[char.codeUnitAt(0) - 'a'.codeUnitAt(0)]++;
+      }
+
+      bool isUniversal = true;
+
+      for (int i = 0; i < 26; i++) {
+        if (maxCharFreq[i] > tempCharFreq[i]) {
+          isUniversal = false;
+          break;
+        }
+      }
+
+      if (isUniversal) {
+        result.add(word);
+      }
+    }
+
+    return result;
+  }
+}
