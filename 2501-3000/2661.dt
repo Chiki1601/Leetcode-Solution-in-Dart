@@ -1,0 +1,33 @@
+class Solution {
+  int firstCompleteIndex(List<int> arr, List<List<int>> mat) {
+  int m = mat.length;
+  int n = mat[0].length;
+  
+  // Mapping numbers to their matrix positions
+  Map<int, List<int>> position = {};
+  for (int i = 0; i < m; i++) {
+    for (int j = 0; j < n; j++) {
+      position[mat[i][j]] = [i, j];
+    }
+  }
+
+  // Arrays to track row and column fills
+  List<int> rowCount = List.filled(m, 0);
+  List<int> colCount = List.filled(n, 0);
+
+  for (int i = 0; i < arr.length; i++) {
+    var pos = position[arr[i]]!;
+    int row = pos[0];
+    int col = pos[1];
+
+    rowCount[row]++;
+    colCount[col]++;
+
+    // Check if the entire row or column is painted
+    if (rowCount[row] == n || colCount[col] == m) {
+      return i;
+    }
+  }
+
+  return -1;  // Just in case nothing ever gets fully painted
+}}
