@@ -1,0 +1,28 @@
+class Solution {
+  bool areAlmostEqual(String s1, String s2) {
+  int differences = 0;
+  int index1 = -1;
+  int index2 = -1;
+
+  if(s1 == s2) {
+    return true;
+  }
+
+  for(int i = 0; i < s1.length; i++) {
+    if(s1[i] != s2[i]) {
+      differences++;
+      if(index1 == -1) {
+        index1 = i;
+      } else {
+        index2 = i;
+      }
+    }
+  }
+
+  if(differences == 2) {
+    return (s1[index1] == s2[index2]) && (s1[index2] == s2[index1]);
+  }
+
+  return false;
+  }
+}
