@@ -1,0 +1,17 @@
+class Solution {
+  String clearDigits(String s) {
+    List<String> num1 =["1","2","3","4","5","6","7","8","9","0"];
+    List<String> ans = [];
+    List<String> li =s.split('');
+    for(int i=0;i<li.length;i++){
+        if(!num1.contains(li[i])){
+            ans.add(li[i]);
+        }else{
+        ans.removeAt(ans.length-1);
+        }
+    }
+    String res = ans.join('');
+    return res;
+    
+  }
+}
