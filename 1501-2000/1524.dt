@@ -1,0 +1,17 @@
+class Solution {
+  int numOfSubarrays(List<int> arr) {
+      int m=1;
+      int n=0;
+      int s=0;
+      for(var i in arr){
+          s += i;
+          if(s%2==0){
+              m++;
+          }
+          else{
+              n++;
+          }
+      }
+      return (n*m)%(pow(10,9) +7) as int;
+  }
+}
