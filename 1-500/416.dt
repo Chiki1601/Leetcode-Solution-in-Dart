@@ -1,0 +1,33 @@
+class Solution {
+    bool canPartition(List<int> nums) {
+        final sum = nums.fold<int>(0, (a, b) => a + b);
+        final target = sum ~/ 2;
+        if (sum % 2 != 0) {
+            return false;
+        }
+
+        final List<List<int>> memo = List<List<int>>.generate(nums.length, (_) => List<int>.filled(target + 1, -1));
+        return helper(nums, 0, target, memo);
+    }
+
+    bool helper(List<int> nums, int index, int target, List<List<int>> memo) {
+        if (index >= nums.length || target < 0) {
+            return false;
+        }
+
+        if (target == 0) {
+            return true;
+        }
+
+        if (memo[index][target] != -1) {
+            return memo[index][target] == 1;
+        }
+
+        final include = helper(nums, index + 1, target - nums[index], memo);
+        final exclude = helper(nums, index + 1, target, memo);
+
+        memo[index][target] = (include || exclude) ? 1 : 0;
+
+        return memo[index][target] == 1;
+    }
+}
