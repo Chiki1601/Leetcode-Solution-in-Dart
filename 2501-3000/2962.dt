@@ -1,0 +1,20 @@
+class Solution {
+  int countSubarrays(List<int> nums, int k) {
+    int res = 0, cnt = 0, mx = 0, l = 0;
+    for (final n in nums){
+      if (mx < n) {
+        mx = n;
+        cnt = 0;
+        res = 0;
+      }
+      if (mx == n) cnt++;
+      while (cnt >= k && !(cnt == k && nums[l] == mx)){
+        if (nums[l] == mx) cnt--;
+        l++;
+      }
+      // print('l: $l, n: $n, cnt: $cnt');
+      if (cnt == k) res += l + 1;
+    }
+    return res;
+  }
+}
