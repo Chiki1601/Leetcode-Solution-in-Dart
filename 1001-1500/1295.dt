@@ -1,0 +1,13 @@
+class Solution {
+  int findNumbers(List<int> nums) {
+    String nu='';
+    int count=0;
+    for(int n in nums){
+nu=n.toString();
+if(nu.length%2==0){
+    count++;
+}
+    }
+    return count;
+  }
+}
