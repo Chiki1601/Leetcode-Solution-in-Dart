@@ -1,0 +1,16 @@
+class Solution {
+  int matchPlayersAndTrainers(List<int> players, List<int> trainers) {
+    players.sort();
+    trainers.sort();
+
+    int i = 0, j = 0, matches = 0;
+    while (i < players.length && j < trainers.length) {
+      if (players[i] <= trainers[j]) {
+        ++matches;         // successful pairing
+        ++i;               // next player
+      }
+      ++j;                 // this trainer considered
+    }
+    return matches;
+  }
+}
