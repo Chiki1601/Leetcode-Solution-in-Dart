@@ -1,0 +1,55 @@
+class Solution {
+  int numOfUnplacedFruits(List<int> fruits, List<int> baskets) {
+    int n = baskets.length;
+    int N = 1;
+    while (N <= n) N <<= 1;
+
+    List<int> segTree = List.filled(N << 1, 0);
+
+    // Fill leaf nodes with basket values
+    for (int i = 0; i < n; i++) {
+      segTree[N + i] = baskets[i];
+    }
+
+    // Build the segment tree (max values)
+    for (int i = N - 1; i > 0; i--) {
+      segTree[i] = segTree[2 * i].compareTo(segTree[2 * i + 1]) > 0
+          ? segTree[2 * i]
+          : segTree[2 * i + 1];
+    }
+
+    int count = 0;
+
+    for (int fruit in fruits) {
+      int index = 1;
+
+      // If no basket can hold the fruit
+      if (segTree[index] < fruit) {
+        count++;
+        continue;
+      }
+
+      // Find the first available basket for the fruit
+      while (index < N) {
+        if (segTree[2 * index] >= fruit) {
+          index = 2 * index;
+        } else {
+          index = 2 * index + 1;
+        }
+      }
+
+      // Mark that basket as used
+      segTree[index] = -1;
+
+      // Update segment tree upwards
+      while (index > 1) {
+        index ~/= 2;
+        segTree[index] = segTree[2 * index].compareTo(segTree[2 * index + 1]) > 0
+            ? segTree[2 * index]
+            : segTree[2 * index + 1];
+      }
+    }
+
+    return count;
+  }
+}
