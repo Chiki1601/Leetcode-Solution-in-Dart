@@ -1,0 +1,13 @@
+import 'dart:math';
+
+class Solution {
+  int areaOfMaxDiagonal(List<List<int>> dimensions) {
+    final best = dimensions.reduce((a, b) {
+      final da = a[0]*a[0] + a[1]*a[1];
+      final db = b[0]*b[0] + b[1]*b[1];
+      if (da == db) return (a[0]*a[1] >= b[0]*b[1]) ? a : b;
+      return da > db ? a : b;
+    });
+    return best[0] * best[1];
+  }
+}
