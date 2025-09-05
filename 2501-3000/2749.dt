@@ -1,0 +1,24 @@
+class Solution {
+  int makeTheIntegerZero(int num1, int num2) {
+    for (int t = 0; t <= 60; t++) {
+      int s = num1 - t * num2;
+      if (s < 0) continue;
+      if (s < t) continue;
+
+      int ones = _bitCount(s);
+      if (ones <= t) {
+        return t;
+      }
+    }
+    return -1;
+  }
+
+  int _bitCount(int n) {
+    int count = 0;
+    while (n > 0) {
+      n &= (n - 1);
+      count++;
+    }
+    return count;
+  }
+}
