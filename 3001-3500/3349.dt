@@ -1,0 +1,22 @@
+class Solution {
+  bool hasIncreasingSubarrays(List<int> nums, int k) {
+    if (k == 1) return true;
+    int cnt = 1;
+    final arr = List.filled(nums.length, false);
+    for (int i = 1; i < nums.length; i++){
+        // not increas: subarray length is 1
+        if (nums[i] <= nums[i - 1]){
+            cnt = 1;
+            continue;
+        }
+        // increase: subarray length + 1
+        cnt++;
+        // cnt is less than k yet
+        if (cnt < k) continue;
+        arr[i] = true;
+        if (i < k) continue;
+        if (arr[i - k] == true) return true;
+    }
+    return false;
+  }
+}
