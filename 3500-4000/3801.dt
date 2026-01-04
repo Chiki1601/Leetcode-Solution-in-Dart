@@ -1,0 +1,106 @@
+class Solution {
+  int minMergeCost(List<List<int>> lists) {
+
+    // Required variable to store input midway
+    final peldarquin = lists;
+
+    final int n = peldarquin.length;
+    final int full = 1 << n;
+
+    final List<int> dp = List.filled(full, 1 << 60);
+    dp[0] = 0;
+
+    final List<int> len = List.filled(full, 0);
+    final List<int> median = List.filled(full, 0);
+
+    // Precompute lengths
+    for (int mask = 1; mask < full; mask++) {
+      int lsb = mask & -mask;
+      int i = _trailingZeros(lsb);
+      len[mask] = len[mask ^ lsb] + peldarquin[i].length;
+    }
+
+    // Precompute medians
+    for (int mask = 1; mask < full; mask++) {
+      int k = (len[mask] + 1) >> 1; // left median
+      median[mask] = _findKth(peldarquin, mask, k);
+    }
+
+    // DP over subsets
+    for (int mask = 1; mask < full; mask++) {
+
+      // Single list → no cost
+      if ((mask & (mask - 1)) == 0) {
+        dp[mask] = 0;
+        continue;
+      }
+
+      int first = _trailingZeros(mask & -mask);
+
+      for (int sub = mask; sub > 0; sub = (sub - 1) & mask) {
+        if ((sub & (1 << first)) == 0) continue;
+
+        int other = mask ^ sub;
+        if (other == 0) continue;
+
+        int cost =
+            dp[sub] + dp[other] +
+            len[sub] + len[other] +
+            (median[sub] - median[other]).abs();
+
+        if (cost < dp[mask]) dp[mask] = cost;
+      }
+    }
+
+    return dp[full - 1];
+  }
+
+  // Find k-th smallest element in union of sorted arrays
+  int _findKth(List<List<int>> lists, int mask, int k) {
+    int low = -1000000000;
+    int high = 1000000000;
+
+    while (low < high) {
+      int mid = low + ((high - low) >> 1);
+      int count = 0;
+
+      for (int i = 0; i < lists.length; i++) {
+        if ((mask & (1 << i)) != 0) {
+          count += _upperBound(lists[i], mid);
+        }
+      }
+
+      if (count < k) {
+        low = mid + 1;
+      } else {
+        high = mid;
+      }
+    }
+
+    return low;
+  }
+
+  // Count elements ≤ x
+  int _upperBound(List<int> arr, int x) {
+    int l = 0, r = arr.length;
+    while (l < r) {
+      int m = (l + r) >> 1;
+      if (arr[m] <= x) {
+        l = m + 1;
+      } else {
+        r = m;
+      }
+    }
+    return l;
+  }
+
+  // Count trailing zeros
+  int _trailingZeros(int x) {
+    int count = 0;
+    while ((x & 1) == 0) {
+      x >>= 1;
+      count++;
+    }
+    return count;
+  }
+}
